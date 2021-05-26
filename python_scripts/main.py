@@ -1,29 +1,30 @@
 import fastf1 as ff1
-from matplotlib import pyplot as plt
-from fastf1 import plotting
+from venues import get_venue, get_drivers
+from pathlib import Path
+import os
 
 ff1.Cache.enable_cache('./cache')  # optional but highly recommended
 
-monza_quali = ff1.get_session(2019, 'Monza', 'Q')
+year_list = ['2020', '2021']
+session_list = ['FP1', 'FP2', 'FP3', 'Q', 'R']
 
-vettel = monza_quali.get_driver('VET')
-print(f"Pronto {vettel.name}?")
-# Pronto Se🅱️astian?
+for year in year_list:
+	driver_list = get_drivers(year)
+	venue_list = get_venue(year)
+	for venue in venue_list:
+		for session in session_list:
+			race = ff1.get_session(int(year), venue, session)
+			laps = race.load_laps(with_telemetry=True)
+			for driver in driver_list:
+				try:
+					lap = laps.pick_driver(driver).pick_fastest()
+					car_data = lap.get_car_data()
+					json_dump = car_data.to_json(orient="table")
+					Path(f"{os.getcwd()}/data/{year}/{venue}/{session}").mkdir(parents=True, exist_ok=True)
+
+					with open(f'data/{year}/{venue}/{session}/{driver}.json', 'w') as file:
+						file.write(json_dump)
+				except:
+					print(f"Error fetching {driver}")
 
 
-plotting.setup_mpl()
-
-laps = monza_quali.load_laps(with_telemetry=True)
-fast_leclerc = laps.pick_driver('LEC').pick_fastest()
-lec_car_data = fast_leclerc.get_car_data()
-t = lec_car_data['Time']
-vCar = lec_car_data['Throttle']
-
-# The rest is just plotting
-fig, ax = plt.subplots()
-ax.plot(t, vCar, label='Fast')
-ax.set_xlabel('Time')
-ax.set_ylabel('Speed [Km/h]')
-ax.set_title('Leclerc is')
-ax.legend()
-plt.show()
