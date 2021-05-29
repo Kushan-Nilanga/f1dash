@@ -10,7 +10,7 @@ export function LapCompareComponent() {
 	var [lapList, changeComponent] = useState([])
 
 	const handleRemoveLap = (event) => {
-		changeComponent([...lapList, lapList.splice(event.target.value, 1)])
+		changeComponent(lapList.splice(event.target.value, 1))
 	}
 
 	const handleAddLap = (event) => {
