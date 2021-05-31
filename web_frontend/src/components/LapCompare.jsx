@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react"
 import { LapPickerComponent } from "./LapPicker";
 import axios from 'axios'
+import { useSelector } from 'react-redux'
 
 var mkey = 0;
 var yearList = []
 export function LapCompareComponent() {
-	useEffect(() => {axios.get("http://localhost:5000/api").then(res => {yearList = res.data})})
+	const data = useSelector(state => state.trackdata)
+
+	useEffect(() => { axios.get("http://localhost:5000/api").then(res => { yearList = res.data }) })
 
 	var [lapList, changeComponent] = useState([])
 
@@ -32,5 +35,6 @@ export function LapCompareComponent() {
 					<button className="btn btn-success" onClick={handleAddLap}>Add lap data</button>
 				</div>
 			</div>
+			{data}
 		</div>)
 }
