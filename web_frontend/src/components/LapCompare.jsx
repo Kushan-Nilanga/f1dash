@@ -7,6 +7,7 @@ var mkey = 0;
 var yearList = []
 export function LapCompareComponent() {
 	const data = useSelector(state => state.trackdata)
+	console.log(data.length)
 
 	useEffect(() => { axios.get("http://localhost:5000/api").then(res => { yearList = res.data }) })
 

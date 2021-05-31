@@ -1,10 +1,14 @@
 import React, { useState } from "react"
 import axios from "axios"
+import {useDispatch} from 'react-redux'
+import {addData} from '../actions'
 
 
 function DriverPickerComponent(props) {
 	var [data, dataFetch] = useState()
 	var [activeDriver, changeDriver] = useState(0)
+
+	const dispatch = useDispatch()
 
 	function render() {
 
@@ -14,6 +18,10 @@ function DriverPickerComponent(props) {
 					.then(res => {
 						dataFetch(res.data)
 						changeDriver(e.target.id)
+
+						
+						dispatch(addData(res.data))
+
 					})
 			} else { changeDriver(0) }
 		}
