@@ -1,8 +1,7 @@
 import React, { useState } from "react"
 import axios from "axios"
-import {useDispatch} from 'react-redux'
-import {addData} from '../actions'
-
+import { useDispatch } from 'react-redux'
+import { addData } from '../actions'
 
 function DriverPickerComponent(props) {
 	var [data, dataFetch] = useState()
@@ -19,7 +18,6 @@ function DriverPickerComponent(props) {
 						dataFetch(res.data)
 						changeDriver(e.target.id)
 
-						
 						dispatch(addData(res.data))
 
 					})
@@ -150,6 +148,7 @@ function VenuePickerComponent(props) {
 export function LapPickerComponent(props) {
 	var [activeYear, changeYear] = useState(0)
 	var [venues, venueFetch] = useState([])
+	console.log(props.venue)
 
 	// Rendering Year List
 	function render() {

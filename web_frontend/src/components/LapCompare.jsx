@@ -1,41 +1,47 @@
 import React, { useState, useEffect } from "react"
 import { LapPickerComponent } from "./LapPicker";
 import axios from 'axios'
-import { useSelector } from 'react-redux'
+import { Dashboard } from './telemetryDash'
 
-var mkey = 0;
 var yearList = []
+var initKey = 0
 export function LapCompareComponent() {
-	const data = useSelector(state => state.trackdata)
-	console.log(data.length)
-
 	useEffect(() => { axios.get("http://localhost:5000/api").then(res => { yearList = res.data }) })
 
-	var [lapList, changeComponent] = useState([])
+	var [dataComponents, changeComponent] = useState([])
 
-	const handleRemoveLap = (event) => {
-		changeComponent(lapList.splice(event.target.value, 1))
-	}
-
-	const handleAddLap = (event) => {
-		event.preventDefault();
-		changeComponent([...lapList,
-		<div key={mkey} className="card col">
+	function handleAddLap() {
+		function handleRemoveData(e) {
+			var placeholder = []
+			console.log(e.target.id)
+			dataComponents.forEach(comp => {
+				if (comp.key !== e.target.id) {
+					placeholder = [...placeholder, comp]
+				}
+				console.log(placeholder)
+			})
+			console.log(placeholder)
+			changeComponent(placeholder)
+		}
+		initKey++
+		changeComponent([...dataComponents,
+		<div className="card col" key={initKey}>
 			<LapPickerComponent yearList={yearList} />
-			<button value={mkey} className="btn btn-outline-secondary" onClick={handleRemoveLap}>Remove</button>
+			<button className="btn btn-primary" id={initKey} onClick={handleRemoveData}>Remove Data</button>
 		</div>
 		])
-		mkey++;
 	}
 
 	return (
 		<div className="container">
 			<div className="row">
-				{lapList}
+				{dataComponents}
 				<div className="card col">
 					<button className="btn btn-success" onClick={handleAddLap}>Add lap data</button>
 				</div>
 			</div>
-			{data}
+			<div>
+				<Dashboard />
+			</div>
 		</div>)
 }
