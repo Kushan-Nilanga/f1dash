@@ -27,7 +27,7 @@ export function LapCompareComponent() {
 		changeComponent([...dataComponents,
 		<div className="card col" key={initKey}>
 			<LapPickerComponent yearList={yearList} />
-			<button className="btn btn-primary" id={initKey} onClick={handleRemoveData}>Remove Data</button>
+			<button className="btn btn-outline-primary btn-sm" id={initKey} onClick={handleRemoveData}>Remove Data</button>
 		</div>
 		])
 	}
@@ -37,7 +37,7 @@ export function LapCompareComponent() {
 			<div className="row">
 				{dataComponents}
 				<div className="card col">
-					<button className="btn btn-success" onClick={handleAddLap}>Add lap data</button>
+					<button className="btn btn-outline-primary btn-sm" onClick={handleAddLap}>Add lap data</button>
 				</div>
 			</div>
 			<div>

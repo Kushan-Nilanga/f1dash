@@ -17,6 +17,7 @@ function DriverPickerComponent(props) {
 					.then(res => {
 						dataFetch(res.data)
 						changeDriver(e.target.id)
+						res.data['driver'] = e.target.id
 
 						dispatch(addData(res.data))
 
@@ -35,10 +36,9 @@ function DriverPickerComponent(props) {
 							key={driver}
 							onClick={onDriverClick}
 							id={driver}
-							className={activeDriver == driver ? "list-group-item list-group-item-action active" : "list-group-item list-group-item-action"}>
+							className={activeDriver == driver ? "list-group-item list-group-item-action" : "list-group-item list-group-item-action"}>
 							{driver}
 						</li>
-						{activeDriver == driver ? console.log(data) : <></>}
 					</>
 				)
 		});
@@ -65,7 +65,6 @@ function SessionPickerComponent(props) {
 					.then(res => {
 						driverFetch(res.data)
 						changeSession(e.target.id)
-						console.log(res.data)
 					})
 			} else { changeSession(0) }
 		}
@@ -81,7 +80,7 @@ function SessionPickerComponent(props) {
 							key={session}
 							onClick={onSessionClick}
 							id={session}
-							className={activeSession == session ? "list-group-item list-group-item-action active" : "list-group-item list-group-item-action"}>
+							className={activeSession == session ? "list-group-item list-group-item-action" : "list-group-item list-group-item-action"}>
 							{session}
 						</li>
 						{activeSession == session ? <DriverPickerComponent year={props.year} venue={props.venue} session={session} driverList={drivers} /> : <></>}
@@ -102,11 +101,8 @@ function SessionPickerComponent(props) {
 function VenuePickerComponent(props) {
 	var [activeVenue, changeVenue] = useState(0);
 	var [sessions, sessionFetch] = useState();
-	console.log(props.venueList)
-
-
+	
 	function render() {
-
 		function onVenueClick(e) {
 			if (activeVenue != e.target.id) {
 				axios.get(`http://localhost:5000/api/${props.year}/${e.target.id}`)
@@ -127,7 +123,7 @@ function VenuePickerComponent(props) {
 							key={venue}
 							id={venue}
 							onClick={onVenueClick}
-							className={activeVenue == venue ? "list-group-item list-group-item-action active" : "list-group-item list-group-item-action"}>
+							className={activeVenue == venue ? "list-group-item list-group-item-action" : "list-group-item list-group-item-action"}>
 							{venue}
 						</li>
 						{activeVenue == venue ? <SessionPickerComponent year={props.year} venue={venue} sessionList={sessions} /> : <></>}
@@ -148,7 +144,6 @@ function VenuePickerComponent(props) {
 export function LapPickerComponent(props) {
 	var [activeYear, changeYear] = useState(0)
 	var [venues, venueFetch] = useState([])
-	console.log(props.venue)
 
 	// Rendering Year List
 	function render() {
@@ -171,7 +166,7 @@ export function LapPickerComponent(props) {
 						key={year}
 						value={year}
 						onClick={yearOnClick}
-						className={activeYear == year ? "list-group-item list-group-item-action active" : "list-group-item list-group-item-action"}>
+						className={activeYear == year ? "list-group-item list-group-item-action" : "list-group-item list-group-item-action"}>
 						{year}
 					</li>
 					{activeYear == year ? <VenuePickerComponent year={year} venueList={venues} /> : <></>}
